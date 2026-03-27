@@ -43,26 +43,33 @@ public class AppConfig {
     @SuppressWarnings("unchecked")
     private static AccountConfig parseAccount(Map<String, Object> acc) {
         String name = requireString(acc, "name");
-        Map<String, Object> pop3Map = (Map<String, Object>) acc.get("pop3");
-        Map<String, Object> imapMap = (Map<String, Object>) acc.get("imap");
-        if (pop3Map == null) throw new IllegalArgumentException("Account '" + name + "' missing pop3 config");
-        if (imapMap == null) throw new IllegalArgumentException("Account '" + name + "' missing imap config");
+        Map<String, Object> inputMap = (Map<String, Object>) acc.get("input");
+        Map<String, Object> outputMap = (Map<String, Object>) acc.get("output");
+        if (inputMap == null) throw new IllegalArgumentException("Account '" + name + "' missing input config");
+        if (outputMap == null) throw new IllegalArgumentException("Account '" + name + "' missing output config");
 
-        ServerConfig pop3 = parseServerConfig(pop3Map);
-        ImapServerConfig imap = parseImapConfig(imapMap);
+        String protocol = getStringOrDefault(inputMap, "protocol", "pop3");
+        ServerConfig input;
+        if ("imap".equalsIgnoreCase(protocol)) {
+            input = parseImapConfig(inputMap);
+        } else {
+            input = parseServerConfig(inputMap, protocol);
+        }
+        ImapServerConfig output = parseImapConfig(outputMap);
         int pollingInterval = getIntOrDefault(acc, "polling_interval", 300);
         boolean deleteAfterCopy = getBoolOrDefault(acc, "delete_after_copy", false);
 
-        return new AccountConfig(name, pop3, imap, pollingInterval, deleteAfterCopy);
+        return new AccountConfig(name, input, output, pollingInterval, deleteAfterCopy);
     }
 
-    private static ServerConfig parseServerConfig(Map<String, Object> map) {
+    private static ServerConfig parseServerConfig(Map<String, Object> map, String protocol) {
         return new ServerConfig(
                 requireString(map, "host"),
                 requireInt(map, "port"),
                 requireString(map, "username"),
                 requireString(map, "password"),
-                getBoolOrDefault(map, "ssl", true)
+                getBoolOrDefault(map, "ssl", true),
+                protocol
         );
     }
 

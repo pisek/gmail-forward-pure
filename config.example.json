@@ -2,18 +2,41 @@
   "db_path": "./data",
   "accounts": [
     {
-      "name": "example-account",
-      "pop3": {
+      "name": "pop3-example",
+      "input": {
+        "protocol": "pop3",
         "host": "pop.example.com",
         "port": 995,
         "username": "user@example.com",
         "password": "your-pop3-password",
         "ssl": true
       },
-      "imap": {
+      "output": {
         "host": "imap.example.com",
         "port": 993,
         "username": "user@example.com",
+        "password": "your-imap-password",
+        "ssl": true,
+        "folder": "INBOX"
+      },
+      "polling_interval": 300,
+      "delete_after_copy": false
+    },
+    {
+      "name": "imap-example",
+      "input": {
+        "protocol": "imap",
+        "host": "imap.source.com",
+        "port": 993,
+        "username": "user@source.com",
+        "password": "your-imap-password",
+        "ssl": true,
+        "folder": "INBOX"
+      },
+      "output": {
+        "host": "imap.destination.com",
+        "port": 993,
+        "username": "user@destination.com",
         "password": "your-imap-password",
         "ssl": true,
         "folder": "INBOX"

@@ -37,14 +37,15 @@ Create a `config.json` file (see `config.example.json`):
   "accounts": [
     {
       "name": "personal-gmail",
-      "pop3": {
+      "input": {
+        "protocol": "pop3",
         "host": "pop.gmail.com",
         "port": 995,
         "username": "user@gmail.com",
         "password": "your-app-password",
         "ssl": true
       },
-      "imap": {
+      "output": {
         "host": "imap.destination.com",
         "port": 993,
         "username": "user@destination.com",
@@ -65,19 +66,21 @@ Create a `config.json` file (see `config.example.json`):
 |---|---|---|
 | `db_path` | Directory for duplicate tracking files | `./data` |
 | `name` | Unique account identifier | required |
-| `pop3.host` | POP3 server hostname | required |
-| `pop3.port` | POP3 server port | required |
-| `pop3.username` | POP3 login username | required |
-| `pop3.password` | POP3 login password | required |
-| `pop3.ssl` | Enable SSL/TLS | `true` |
-| `imap.host` | IMAP server hostname | required |
-| `imap.port` | IMAP server port | required |
-| `imap.username` | IMAP login username | required |
-| `imap.password` | IMAP login password | required |
-| `imap.ssl` | Enable SSL/TLS | `true` |
-| `imap.folder` | Target IMAP folder | `INBOX` |
+| `input.protocol` | Input protocol: `pop3` or `imap` | `pop3` |
+| `input.host` | Input server hostname | required |
+| `input.port` | Input server port | required |
+| `input.username` | Input login username | required |
+| `input.password` | Input login password | required |
+| `input.ssl` | Enable SSL/TLS | `true` |
+| `input.folder` | Source IMAP folder (only when protocol is `imap`) | `INBOX` |
+| `output.host` | IMAP server hostname | required |
+| `output.port` | IMAP server port | required |
+| `output.username` | IMAP login username | required |
+| `output.password` | IMAP login password | required |
+| `output.ssl` | Enable SSL/TLS | `true` |
+| `output.folder` | Target IMAP folder | `INBOX` |
 | `polling_interval` | Seconds between checks | `300` |
-| `delete_after_copy` | Delete messages from POP3 after copying | `false` |
+| `delete_after_copy` | Delete messages from input server after copying | `false` |
 
 ### Passwords
 
