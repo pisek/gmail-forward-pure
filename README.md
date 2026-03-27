@@ -1,5 +1,7 @@
 # Gmail Forward (Pure Java)
 
+[![Build](https://github.com/pisek/gmail-forward-pure/actions/workflows/build.yml/badge.svg)](https://github.com/pisek/gmail-forward-pure/actions/workflows/build.yml)
+
 A POP3-to-IMAP mail forwarder written in pure Java with zero external dependencies. Periodically fetches emails from POP3 servers and copies them to IMAP servers, preserving original sender (FROM) headers.
 
 ## Features
