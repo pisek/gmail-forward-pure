@@ -25,7 +25,7 @@ A POP3-to-IMAP mail forwarder written in pure Java with zero external dependenci
 mvn package
 ```
 
-Produces an executable JAR at `target/gmail-forward-1.0.0-SNAPSHOT.jar`.
+Produces an executable JAR at `target/gmail-forward-1.0.0.jar`.
 
 ## Configuration
 
@@ -97,7 +97,7 @@ If you use Gmail as a POP3 source, generate a dedicated App Password at https://
 ## Running
 
 ```bash
-java -jar target/gmail-forward-1.0.0-SNAPSHOT.jar --config config.json
+java -jar target/gmail-forward-1.0.0.jar --config config.json
 ```
 
 The `--config` flag defaults to `config.json` in the current directory if omitted.
