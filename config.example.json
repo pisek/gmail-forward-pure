@@ -12,12 +12,12 @@
         "ssl": true
       },
       "output": {
-        "host": "imap.example.com",
-        "port": 993,
+        "host": "smtp.example.com",
+        "port": 465,
         "username": "user@example.com",
-        "password": "your-imap-password",
+        "password": "your-smtp-password",
         "ssl": true,
-        "folder": "INBOX"
+        "to": "recipient@example.com"
       },
       "polling_interval": 300,
       "delete_after_copy": false
@@ -34,12 +34,12 @@
         "folder": "INBOX"
       },
       "output": {
-        "host": "imap.destination.com",
-        "port": 993,
+        "host": "smtp.destination.com",
+        "port": 465,
         "username": "user@destination.com",
-        "password": "your-imap-password",
+        "password": "your-smtp-password",
         "ssl": true,
-        "folder": "INBOX"
+        "to": "recipient@destination.com"
       },
       "polling_interval": 300,
       "delete_after_copy": false

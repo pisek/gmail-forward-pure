@@ -55,7 +55,7 @@ public class AppConfig {
         } else {
             input = parseServerConfig(inputMap, protocol);
         }
-        ImapServerConfig output = parseImapConfig(outputMap);
+        SmtpServerConfig output = parseSmtpConfig(outputMap);
         int pollingInterval = getIntOrDefault(acc, "polling_interval", 300);
         boolean deleteAfterCopy = getBoolOrDefault(acc, "delete_after_copy", false);
 
@@ -81,6 +81,17 @@ public class AppConfig {
                 requireString(map, "password"),
                 getBoolOrDefault(map, "ssl", true),
                 getStringOrDefault(map, "folder", "INBOX")
+        );
+    }
+
+    private static SmtpServerConfig parseSmtpConfig(Map<String, Object> map) {
+        return new SmtpServerConfig(
+                requireString(map, "host"),
+                requireInt(map, "port"),
+                requireString(map, "username"),
+                requireString(map, "password"),
+                getBoolOrDefault(map, "ssl", true),
+                requireString(map, "to")
         );
     }
 

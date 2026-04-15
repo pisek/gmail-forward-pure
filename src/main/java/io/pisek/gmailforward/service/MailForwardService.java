@@ -2,8 +2,10 @@ package io.pisek.gmailforward.service;
 
 import io.pisek.gmailforward.config.AccountConfig;
 import io.pisek.gmailforward.config.ImapServerConfig;
+import io.pisek.gmailforward.config.SmtpServerConfig;
 import io.pisek.gmailforward.net.ImapClient;
 import io.pisek.gmailforward.net.Pop3Client;
+import io.pisek.gmailforward.net.SmtpClient;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -149,16 +151,22 @@ public class MailForwardService {
 
     private void forwardMessages(AccountConfig account, List<MessageData> messages,
                                  Set<Integer> successfulNumbers) {
-        for (MessageData message : messages) {
-            try (ImapClient imapOut = ImapClient.connect(account.getOutput())) {
-                imapOut.appendMessage(account.getOutput().getFolder(), message.rawContent());
-                tracker.markSeen(account.getName(), message.messageId());
-                successfulNumbers.add(message.messageNumber());
-                log.fine("Account '" + account.getName() + "': forwarded message " + message.messageId());
-            } catch (Exception e) {
-                log.log(Level.WARNING, "Account '" + account.getName() +
-                        "': failed to forward message " + message.messageId() + ": " + e.getMessage(), e);
+        SmtpServerConfig smtpConfig = account.getOutput();
+        try (SmtpClient smtp = SmtpClient.connect(smtpConfig)) {
+            for (MessageData message : messages) {
+                try {
+                    smtp.sendMessage(smtpConfig.getUsername(), smtpConfig.getTo(), message.rawContent());
+                    tracker.markSeen(account.getName(), message.messageId());
+                    successfulNumbers.add(message.messageNumber());
+                    log.fine("Account '" + account.getName() + "': forwarded message " + message.messageId());
+                } catch (Exception e) {
+                    log.log(Level.WARNING, "Account '" + account.getName() +
+                            "': failed to forward message " + message.messageId() + ": " + e.getMessage(), e);
+                }
             }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Account '" + account.getName() +
+                    "': failed to connect to SMTP server: " + e.getMessage(), e);
         }
     }
 }
